@@ -18,7 +18,7 @@ const CONFIG = {
 
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-const PLUMBOB_SRC = "openart-gpt-image-2-1_1776897360401_a4770789.png";
+const PLUMBOB_SRC = "rotating plumbob.png";
 
 /* ======================= apply CONFIG to DOM ======================= */
 function wireConfig(){
