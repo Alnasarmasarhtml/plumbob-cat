@@ -128,17 +128,25 @@ function wireMute(){
 }
 
 /* ======================= floating plumbobs (margins only) ======================= */
-function spawnPlumbobStorm(count = 10){
+const IS_TOUCH  = matchMedia("(hover: none), (pointer: coarse)").matches;
+const IS_MOBILE = window.innerWidth <= 700;
+
+function spawnPlumbobStorm(count){
   const layer = $("#plumbobLayer");
-  if (!layer) return;
+  if (!layer || IS_TOUCH) return;          // no decorative storm on touch
+  if (count == null) count = IS_MOBILE ? 4 : 10;
+  // hard cap right edge so plumbobs never push viewport past 100vw
+  const SAFE_RIGHT_VW = IS_MOBILE ? 86 : 90;
+  const SAFE_LEFT_VW  = IS_MOBILE ? 2  : 0;
   for (let i = 0; i < count; i++){
     const img = document.createElement("img");
     img.src = PLUMBOB_SRC;
-    // keep them in the outer 12% of viewport so they never cover content
     const left = Math.random() < .5;
-    const x = left ? Math.random() * 10 : 90 + Math.random() * 8;
+    const x = left
+      ? SAFE_LEFT_VW + Math.random() * 8
+      : SAFE_RIGHT_VW + Math.random() * 6;
     const y = 4 + Math.random() * 88;
-    const s = 28 + Math.random() * 36;
+    const s = IS_MOBILE ? 22 + Math.random() * 18 : 28 + Math.random() * 36;
     const dly = Math.random() * 4;
     const spd = 3 + Math.random() * 5;
     img.style.cssText = `
@@ -156,15 +164,23 @@ function spawnPlumbobStorm(count = 10){
 function wireCursor(){
   const trail = $("#cursorTrail");
   const hud   = $("#hudCursor img");
-  let last = 0;
 
+  // touch devices: no fake cursor, no trail. Let the system finger be.
+  if (IS_TOUCH){
+    document.body.style.cursor = "auto";
+    if (hud) hud.parentElement.style.display = "none";
+    if (trail) trail.style.display = "none";
+    return;
+  }
+
+  let last = 0;
   document.addEventListener("pointermove", (e) => {
     if (hud) {
       hud.style.left = e.clientX + "px";
       hud.style.top  = e.clientY + "px";
     }
     const now = performance.now();
-    if (now - last < 28) return; // throttle
+    if (now - last < 28) return;
     last = now;
     const dot = document.createElement("span");
     dot.style.left = e.clientX + "px";
@@ -172,13 +188,6 @@ function wireCursor(){
     trail.appendChild(dot);
     setTimeout(() => dot.remove(), 800);
   }, { passive: true });
-
-  // hide system cursor only when over the page (already cursor:none on body)
-  // also hide hud cursor on touch devices
-  if (matchMedia("(hover: none)").matches){
-    document.body.style.cursor = "auto";
-    if (hud) hud.parentElement.style.display = "none";
-  }
 }
 
 /* ======================= sims-style popups ======================= */
@@ -203,12 +212,17 @@ function spawnPopup(pop){
 
   const node = document.createElement("div");
   node.className = "popup";
-  const x = 16 + Math.random() * Math.max(40, window.innerWidth  - 360);
-  const y = 80 + Math.random() * Math.max(60, window.innerHeight - 240);
-  node.style.left = Math.min(x, window.innerWidth - 340) + "px";
-  node.style.top  = Math.min(y, window.innerHeight - 180) + "px";
-  // tiny rotation for chaos
-  node.style.transform = `rotate(${(Math.random() * 4 - 2).toFixed(1)}deg)`;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  // popup width: 320 desktop, 84vw mobile (matches CSS clamp)
+  const popWidth = vw <= 700 ? Math.min(320, vw * 0.84) : 320;
+  const x = 12 + Math.random() * Math.max(20, vw - popWidth - 24);
+  const y = 80 + Math.random() * Math.max(60, vh - 240);
+  node.style.left = Math.max(8, Math.min(x, vw - popWidth - 8)) + "px";
+  node.style.top  = Math.min(y, vh - 180) + "px";
+  // tiny rotation for chaos (less on mobile)
+  const rot = vw <= 700 ? (Math.random() * 2 - 1) : (Math.random() * 4 - 2);
+  node.style.transform = `rotate(${rot.toFixed(1)}deg)`;
 
   node.innerHTML = `
     <div class="pop-head">
