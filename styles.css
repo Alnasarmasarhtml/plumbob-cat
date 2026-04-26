@@ -556,12 +556,31 @@ section.community{ padding:0 } /* full-bleed handled below */
   box-shadow:inset 0 0 10px #00ff5f22, 0 6px 0 #001500;
 }
 .phase h3{
-  margin:0 0 8px; font-family:var(--ff-display); letter-spacing:1.5px;
+  margin:0 0 6px; font-family:var(--ff-display); letter-spacing:1.5px;
   color:var(--plumbob); text-shadow:0 0 10px var(--plumbob-glow);
+  font-size:18px; line-height:1.2;
+  word-break:break-word;
 }
-.phase ul{ margin:0; padding-left:18px; font-family:var(--ff-system); font-size:12px; color:#dfffdf; line-height:1.8 }
+.phase-sub{
+  margin:0 0 10px;
+  font-family:var(--ff-comic); font-style:italic;
+  color:#ffd6f1; font-size:13.5px; line-height:1.4;
+  text-shadow:0 1px 0 #000;
+}
+.phase ul{
+  margin:0; padding-left:18px;
+  font-family:var(--ff-body); font-size:14px;
+  color:#dfffdf; line-height:1.5;
+}
+.phase ul li{ margin-bottom:6px; word-break:break-word; overflow-wrap:anywhere }
+.phase ul li b{
+  font-family:var(--ff-system); font-size:11px;
+  letter-spacing:.5px; color:#fff; display:inline-block; margin-right:4px;
+  text-shadow:0 0 6px var(--plumbob-glow);
+}
 .phase-done{ background:linear-gradient(180deg, #051a05, #0a3a0a); border-color:#fff; box-shadow:inset 0 0 12px #7CFC0066, 0 6px 0 #001500 }
 .phase-done h3{ color:#fff }
+.phase-done ul li b{ color:var(--plumbob-glow) }
 
 /* ----------------- TOKENOMICS ----------------- */
 .token-grid{
@@ -845,6 +864,16 @@ html, body{ max-width:100%; overflow-x:hidden }
 .roadmap-grid > *, .token-grid > *, .bigcats-grid > *,
 .token-stats > *, .cat-stats > *{ min-width:0 }
 
+/* nothing rotated/oversized may push the viewport */
+.lore-text, .lore-art, .stats-art img, .howto-art img,
+.roadmap-art img, .token-art img, .hero-card{
+  max-width:100%;
+}
+/* break any extreme tokens (CA strings, long URLs, RU phrases) before they overflow */
+.ca-value, .phase ul li, .lore-text, .cat-origin, .cat-hook, .cat-lesson{
+  overflow-wrap:anywhere; word-break:break-word;
+}
+
 /* TOUCH DEVICES: no fake cursor, no trail, no halo, system cursor wins */
 @media (hover: none), (pointer: coarse){
   html, body{ cursor:auto !important }
@@ -959,7 +988,10 @@ html, body{ max-width:100%; overflow-x:hidden }
   .roadmap-grid{ gap:18px }
   .roadmap-art img{ transform:none; box-shadow:6px 8px 0 #2c8a00 }
   .phase{ padding:12px 14px; box-shadow:0 4px 0 #001500 }
-  .phase h3{ font-size:18px }
+  .phase h3{ font-size:15px; letter-spacing:1px }
+  .phase-sub{ font-size:12.5px }
+  .phase ul{ font-size:13px; padding-left:16px }
+  .phase ul li b{ font-size:10px }
 
   /* tokenomics */
   .token-grid{ gap:18px }
@@ -1002,6 +1034,24 @@ html, body{ max-width:100%; overflow-x:hidden }
   .t-row-1, .t-row-2{ font-size:clamp(40px, 14vw, 64px) }
   .h2{ font-size:24px }
   .topbar-inner{ padding:6px }
-  .sbtn{ width:38px; height:34px }
+  .sbtn{ width:38px; height:34px; font-size:13px }
   .brand-text{ font-size:18px }
+
+  /* cram less per row so nothing clips */
+  .ca-bar{ flex-wrap:wrap }
+  .ca-value{ font-size:10px; flex:1 1 100%; order:2; margin-top:4px }
+  .ca-label{ order:1 }
+  .ca-copy{ order:1; margin-left:auto }
+
+  /* tokenomics — single column at the smallest width so values never clip */
+  .token-stats{ grid-template-columns:1fr }
+  .ts b{ font-size:14px }
+  .ts-big b{ font-size:20px }
+
+  /* roadmap — slightly tighter still */
+  .phase h3{ font-size:14px }
+  .phase ul{ font-size:12.5px }
+
+  /* hero coin badge can't push past edge */
+  .t-coin{ font-size:.14em; padding:3px 6px }
 }

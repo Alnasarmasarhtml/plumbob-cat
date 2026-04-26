@@ -11,8 +11,8 @@
 
 const CONFIG = {
   CA:       "TBA — DROPS WHEN PLUMBOB GLOWS",   // <- paste contract address
-  TWITTER:  "https://x.com/",                    // <- replace
-  TELEGRAM: "https://t.me/",                     // <- replace
+  TWITTER:  "https://x.com/simscateth",
+  TELEGRAM: "https://t.me/simscateth",
   DEX:      "https://dexscreener.com/",          // <- replace
 };
 
@@ -93,11 +93,13 @@ function bootSequence(){
     document.body.classList.remove("no-scroll");
     setTimeout(() => boot.remove(), 700);
     startAudio();
-    spawnPopup({
-      title: "WELCOME, PLAYER",
-      msg:   "Кот выбран. Кот в курсе. Music is now playing.",
-      cta:   "ACKNOWLEDGE",
-    });
+    if (!IS_TOUCH){
+      spawnPopup({
+        title: "WELCOME, PLAYER",
+        msg:   "Кот выбран. Кот в курсе. Music is now playing.",
+        cta:   "ACKNOWLEDGE",
+      });
+    }
   }, { once: true });
 }
 
@@ -247,6 +249,7 @@ function spawnPopup(pop){
 }
 
 function popupLoop(){
+  if (IS_TOUCH) return;                       // no ambient popups on phone — too intrusive
   const tick = () => {
     const visible = $$("#popupLayer .popup").length;
     if (visible < 3 && document.visibilityState === "visible"){
