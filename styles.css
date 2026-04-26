@@ -860,9 +860,9 @@ section.community{ padding:0 } /* full-bleed handled below */
 html, body{ max-width:100%; overflow-x:hidden }
 
 /* let grid cells actually shrink below their content's natural width */
-.lore-grid > *, .stats-grid > *, .howto-grid > *,
+.hero-grid > *, .lore-grid > *, .stats-grid > *, .howto-grid > *,
 .roadmap-grid > *, .token-grid > *, .bigcats-grid > *,
-.token-stats > *, .cat-stats > *{ min-width:0 }
+.token-stats > *, .cat-stats > *{ min-width:0; max-width:100% }
 
 /* nothing rotated/oversized may push the viewport */
 .lore-text, .lore-art, .stats-art img, .howto-art img,
@@ -907,41 +907,47 @@ html, body{ max-width:100%; overflow-x:hidden }
   .sbtn{ width:42px; height:38px; font-size:14px }
   .ticker{ font-size:11px }
 
-  /* hero */
-  .hero{ padding:24px 14px 40px; min-height:auto }
-  .hero-grid{ gap:22px }
-  .hero-eyebrow{ font-size:9px; padding:5px 8px; letter-spacing:1.4px }
-  .hero-title{ margin-bottom:8px }
+  /* hero — centered on phone, no edge clipping */
+  .hero{ padding:24px 16px 40px; min-height:auto }
+  .hero-grid{ gap:22px; justify-items:center }
+  .hero-left{ text-align:center; width:100%; display:flex; flex-direction:column; align-items:center }
+  .hero-eyebrow{ font-size:9px; padding:5px 8px; letter-spacing:1.4px; align-self:center }
+  .hero-title{ margin:0 auto 8px; text-align:center; max-width:100% }
   .t-row-1, .t-row-2{
-    font-size:clamp(46px, 16vw, 92px);
+    font-size:clamp(44px, 14.5vw, 88px);
     filter:drop-shadow(2px 3px 0 #001500);
   }
   .t-coin{ font-size:.16em; padding:4px 7px; margin-left:.3em }
-  .hero-sub{ font-size:14px; padding:10px 12px }
-  .hero-card{ width:88%; transform:rotate(-1deg); border-width:4px; outline-width:2px }
+  .hero-sub{ font-size:14px; padding:10px 12px; margin:0 auto; text-align:center }
+  .hero-card{ width:100%; max-width:340px; transform:rotate(-1deg); border-width:4px; outline-width:2px }
   .hero-plumbob{ top:-30px; width:64px; height:64px }
   .hero-card-badge{ font-size:9px; padding:3px 6px }
   .hero-card-cap{ font-size:10px; padding:5px 8px }
-  .hero-pills{ gap:6px }
+  .hero-pills{ gap:6px; justify-content:center; width:100% }
   .hero-pills li{ font-size:10px; padding:4px 8px }
-  .hero-cta{ flex-direction:column; gap:10px; width:100% }
+  .hero-cta{ flex-direction:column; gap:10px; width:100%; align-items:stretch }
   .hero-cta .btn{ width:100%; justify-content:center }
   .btn-xl{ font-size:16px; padding:14px 16px; box-shadow:0 4px 0 #000, inset 0 0 12px #ffffff55 }
   .btn-xxl{ font-size:17px; padding:16px 18px; box-shadow:0 4px 0 #000, inset 0 0 12px #ffffff55 }
+  .hero-bottom{ text-align:center }
   .player-bar{ font-size:10px; padding:6px 8px; max-width:100%; overflow:hidden }
 
-  /* lore */
+  /* lore — flat on phone, no rotation overflow, center the art */
   .lore-grid{ gap:18px }
   .lore-text{
     transform:none;
     padding:18px 16px;
     font-size:15.5px;
-    box-shadow:5px 6px 0 #000, 0 0 0 6px #ffe23a inset;
+    box-shadow:4px 5px 0 #000, 0 0 0 6px #ffe23a inset;
+    margin:0 auto;
+    max-width:100%;
   }
   .lore-finale{ font-size:14px; padding:12px 14px }
   .lore-art{
-    transform:rotate(1deg);
-    box-shadow:5px 6px 0 var(--pink-deep);
+    transform:none;
+    box-shadow:4px 5px 0 var(--pink-deep);
+    margin:0 auto;
+    max-width:100%;
   }
   .frame-cap{ font-size:10px }
   .quotes{ gap:10px }
