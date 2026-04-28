@@ -10,10 +10,10 @@
    ===================================================================== */
 
 const CONFIG = {
-  CA:       "TBA — DROPS WHEN PLUMBOB GLOWS",   // <- paste contract address
+  CA:       "0xD8F99BEe148Ed5B11eD473b62564148398C00352",
   TWITTER:  "https://x.com/simscateth",
   TELEGRAM: "https://t.me/simscateth",
-  DEX:      "https://dexscreener.com/",          // <- replace
+  DEX:      "https://dexscreener.com/ethereum/0xD8F99BEe148Ed5B11eD473b62564148398C00352",
 };
 
 const $  = (s, r = document) => r.querySelector(s);
